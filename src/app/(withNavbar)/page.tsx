@@ -1,19 +1,15 @@
 'use client';
 
+import InputField from '@/components/InputField';
 import { Container, Typography, Box } from '@mui/material';
 
 export default function HomePage() {
   return (
-    <Container component="main" maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Welcome to Fregister, Your AI in the Shade
-      </Typography>
-      
-      <Box>
-        <Typography variant="h5" component="h2" gutterBottom>
-          Chat window goes here
-        </Typography>
-      </Box>
-    </Container>
+    <div className="bg-bgMain flex flex-col items-center justify-center min-h-screen">
+      <div className="mb-8 text-primary font-bold text-3xl">
+        Where should we begin?
+      </div>
+      <InputField />
+    </div>
   );
 }

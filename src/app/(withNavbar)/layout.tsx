@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
+import Sidebar from '@/components/Sidebar';
 import Spinner from '@/components/Spinner';
 
 export default function MainLayout({
@@ -29,9 +30,12 @@ export default function MainLayout({
   // If there's a user, show the navbar and the page content
   if (user) {
     return (
-      <div>
-        <Navbar />
-        {children}
+      <div className="bg-bgMain min-h-screen flex">
+        <Sidebar />
+        <main className="flex-1">
+          {/* <Navbar /> */}
+          {children}
+        </main>
       </div>
     );
   }
