@@ -7,6 +7,7 @@ interface InputFieldProps {
   placeholder?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   className?: string;
   disabled?: boolean;
   name?: string;
@@ -17,6 +18,7 @@ export default function InputField({
   placeholder = 'Ask me anything...',
   value,
   onChange,
+  onKeyDown,
   className = '',
   disabled = false,
   name,
@@ -27,6 +29,7 @@ export default function InputField({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       disabled={disabled}
       name={name}
       className={`
@@ -36,7 +39,7 @@ export default function InputField({
         text-primary
         bg-custom-gray
         shadow-lg
-        w-2/3
+        w-full
         hover:shadow-xl
         focus:shadow-xl
         focus:outline-none

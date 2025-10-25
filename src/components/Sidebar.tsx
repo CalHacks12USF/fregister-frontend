@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
+import Link from 'next/link';
 
 const dummyChats = [
   { id: 1, title: "Generate a shopping list for mis..." },
@@ -50,14 +51,14 @@ export default function Sidebar() {
           className="hover:cursor-pointer"
         />
       </div>
-      <div className="flex font-normal text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
+      <Link href="/" className="flex font-normal text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
         <div className="w-6 flex justify-center shrink-0">
           <AddIcon fontSize="small" />
         </div>
         <span className={`transition-all duration-300 whitespace-nowrap ${isCollapsed ? 'opacity-0 w-0 overflow-hidden ml-0' : 'opacity-100 ml-2'}`}>
           New Chat
         </span>
-      </div>
+      </Link>
       <div className="flex font-normal text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
         <div className="w-6 flex justify-center shrink-0">
           <SearchIcon fontSize="small" />
@@ -92,13 +93,14 @@ export default function Sidebar() {
           ) : (
             // Actual chat items
             dummyChats.map((chat, index) => (
+              <Link href={`/chat/${chat.id}`} key={chat.id}>
               <div
-                key={chat.id}
                 className="text-sm hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2 opacity-0 animate-fade-in"
                 style={{ animationDelay: `${(index + 1) * 100}ms`, animationFillMode: 'forwards' }}
               >
                 {chat.title}
               </div>
+              </Link>
             ))
           )}
         </div>
