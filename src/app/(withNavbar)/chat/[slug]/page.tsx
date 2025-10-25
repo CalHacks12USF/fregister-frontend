@@ -84,8 +84,7 @@ export default function ChatPage({ params }: { params: Promise<{ slug: string }>
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
+  const sendMessage = () => {
     if (!inputValue.trim()) return;
 
     const newMessage: Message = {
@@ -108,6 +107,11 @@ export default function ChatPage({ params }: { params: Promise<{ slug: string }>
       };
       setMessages(prev => [...prev, aiResponse]);
     }, 1000);
+  };
+
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    sendMessage();
   };
 
   return (
@@ -146,10 +150,9 @@ export default function ChatPage({ params }: { params: Promise<{ slug: string }>
             placeholder="Ask me anything..."
             className="flex-1 mx-auto"
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey && inputValue.trim()) {
+              if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                const formEvent = new Event('submit', { bubbles: true, cancelable: true });
-                handleSendMessage(formEvent as unknown as React.FormEvent);
+                sendMessage();
               }
             }}
           />

@@ -8,8 +8,7 @@ export default function HomePage() {
   const [inputValue, setInputValue] = useState('');
   const router = useRouter();
 
-  const handleStartChat = (e: React.FormEvent) => {
-    e.preventDefault();
+  const startChat = () => {
     if (!inputValue.trim()) return;
 
     // Generate a unique chat ID (timestamp-based)
@@ -20,6 +19,11 @@ export default function HomePage() {
 
     // Redirect to the new chat
     router.push(`/chat/${chatId}`);
+  };
+
+  const handleStartChat = (e: React.FormEvent) => {
+    e.preventDefault();
+    startChat();
   };
 
   return (
@@ -36,10 +40,9 @@ export default function HomePage() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey && inputValue.trim()) {
+              if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                const formEvent = new Event('submit', { bubbles: true, cancelable: true });
-                handleStartChat(formEvent as unknown as React.FormEvent);
+                startChat();
               }
             }}
           />
