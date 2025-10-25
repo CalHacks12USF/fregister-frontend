@@ -3,22 +3,45 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InputField from '@/components/InputField';
+import { useMessageMutation } from '@/hooks/useMessageMutation';
+import { useAuth } from '@/contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 export default function HomePage() {
   const [inputValue, setInputValue] = useState('');
   const router = useRouter();
+  const { user } = useAuth();
+  const { startConversation, isLoading } = useMessageMutation();
 
-  const startChat = () => {
+  const startChat = async () => {
     if (!inputValue.trim()) return;
+    if (!user?.id) {
+      toast.error('User not authenticated');
+      return;
+    }
 
-    // Generate a unique chat ID (timestamp-based)
-    const chatId = Date.now();
+    const toastId = toast.loading('Starting conversation...');
 
-    // Store the initial message in sessionStorage to pass it to the chat page
-    sessionStorage.setItem(`chat-${chatId}-initial`, inputValue);
+    try {
+      const result = await startConversation({
+        user_id: user.id,
+        content: inputValue,
+        role: 'user',
+      });
 
-    // Redirect to the new chat
-    router.push(`/chat/${chatId}`);
+      if (result?.success) {
+        toast.success('Conversation started!', { id: toastId });
+        const threadId = result.data.thread.id;
+
+        // Redirect to the chat page with the new thread ID
+        router.push(`/chat/${threadId}`);
+      } else {
+        toast.error('Failed to start conversation', { id: toastId });
+      }
+    } catch (error) {
+      console.error('Error starting conversation:', error);
+      toast.error('Failed to start conversation', { id: toastId });
+    }
   };
 
   const handleStartChat = (e: React.FormEvent) => {
@@ -45,6 +68,7 @@ export default function HomePage() {
                 startChat();
               }
             }}
+            disabled={isLoading}
           />
         </form>
       </div>
