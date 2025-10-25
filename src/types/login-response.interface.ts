@@ -1,5 +1,7 @@
 import { User } from ".";
 
 export interface LoginResponse {
-  user: User;
+	user: User;
+	accessToken?: string;
+	refreshToken?: string;
 }

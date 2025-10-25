@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { createContext, useState, useContext, ReactNode } from 'react';
 import { CredentialResponse } from '@react-oauth/google';
 import { LoginResponse, User } from '@/types';
 import { useRouter } from 'next/navigation';
@@ -16,24 +16,28 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window === 'undefined') return null;
     try {
       const storedUser = localStorage.getItem('user');
-      const storedToken = localStorage.getItem('token');
-      if (storedUser && storedToken) {
-        setUser(JSON.parse(storedUser));
-        setToken(storedToken);
-      }
+      return storedUser ? JSON.parse(storedUser) : null;
     } catch (error) {
       console.error("Failed to parse user data from localStorage", error);
+      return null;
     }
-    setIsLoading(false);
-  }, []);
+  });
+
+  const [token, setToken] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      return localStorage.getItem('token');
+    } catch {
+      return null;
+    }
+  });
+
+  const [isLoading] = useState(false);
+  const router = useRouter();
 
   const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {
     const idToken = credentialResponse.credential;
@@ -45,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const toastId = toast.loading('Signing in...');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${idToken}` },
       });
@@ -54,16 +58,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const data: LoginResponse = await response.json();
 
         console.log("Login response data:", data);
-        
+        console.log("Access token received:", data.accessToken);
+
+        // Use the Supabase session token from backend
+        const supabaseToken = data.accessToken;
+        if (!supabaseToken) {
+          toast.error('No access token received from backend.', { id: toastId });
+          console.error('Backend response missing accessToken:', data);
+          return;
+        }
+
         setUser(data.user);
-        setToken(idToken);
+        setToken(supabaseToken);
 
         localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', idToken);
+        localStorage.setItem('token', supabaseToken);
 
         toast.success('Successfully signed in!', { id: toastId });
         router.push('/');
       } else {
+        const errorData = await response.text();
+        console.error('Backend authentication failed:', errorData);
         toast.error('Backend authentication failed.', { id: toastId });
       }
     } catch (error) {

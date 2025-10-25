@@ -36,7 +36,7 @@ export default function ProfilePage() {
       <h1 style={{ fontSize: 24, fontWeight: 700 }}>My Profile</h1>
 
       <section style={{ marginTop: 16 }}>
-        <p><strong>Name:</strong> {user.displayName ?? user.displayName ?? '—'}</p>
+        <p><strong>Name:</strong> {user.name ?? user.name ?? '—'}</p>
         <p><strong>Email:</strong> {user.email ?? user.email ?? '—'}</p>
       </section>
     </main>
