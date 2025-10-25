@@ -5,11 +5,6 @@ import { Avatar } from '@mui/material';
 import Link from 'next/link';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-export interface SimpleDialogProps {
-  open: boolean;
-  selectedValue: string;
-  onClose: (value: string) => void;
-}
 
 export default function Navbar() {
   const { user, logout } = useAuth();
