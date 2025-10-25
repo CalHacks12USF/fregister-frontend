@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import KitchenIcon from '@mui/icons-material/Kitchen';
@@ -79,7 +79,6 @@ export default function Sidebar() {
         <div className="flex-1 overflow-y-auto mt-6 px-2">
           <h3 className="text-sm font-semibold text-custom-gray animate-fade-in">Recent Chats</h3>
           <hr className='text-secondary opacity-70 my-2 animate-fade-in'/>
-          {/* Chat history items will go here */}
           {isLoading ? (
             // Skeleton loading
             <>

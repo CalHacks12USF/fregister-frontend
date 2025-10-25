@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar } from '@mui/material';
 import Link from 'next/link';
@@ -14,7 +13,6 @@ export interface SimpleDialogProps {
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const [open, setOpen] = useState(false);
 
   return user &&(
     <div className='flex h-16 justify-between items-center text-2xl bg-bgMain px-4'>

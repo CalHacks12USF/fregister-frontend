@@ -3,7 +3,6 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import Spinner from '@/components/Spinner';
 

@@ -1,7 +1,6 @@
 'use client';
 
 import InputField from '@/components/InputField';
-import { Container, Typography, Box } from '@mui/material';
 
 export default function HomePage() {
   return (
