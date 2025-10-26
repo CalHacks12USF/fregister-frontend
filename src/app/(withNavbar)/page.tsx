@@ -25,13 +25,15 @@ export default function HomePage() {
     try {
       const result = await startConversation({
         user_id: user.id,
-        content: inputValue,
-        role: 'user',
+        content: inputValue
       });
 
       if (result?.success) {
         toast.success('Conversation started!', { id: toastId });
         const threadId = result.data.thread.id;
+
+        // Store the conversation data in sessionStorage for the chat page
+        sessionStorage.setItem(`chat-${threadId}-data`, JSON.stringify(result.data));
 
         // Redirect to the chat page with the new thread ID
         router.push(`/chat/${threadId}`);
