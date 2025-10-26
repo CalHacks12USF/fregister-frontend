@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Spinner from '@/components/Spinner';
 
@@ -13,16 +13,22 @@ export default function MainLayout({
 }) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  // Set mounted to true after hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // If loading is finished and there's no user, redirect to login
-    if (!isLoading && !user) {
+    if (mounted && !isLoading && !user) {
       router.push('/login');
     }
-  }, [user, isLoading, router]);
+  }, [user, isLoading, router, mounted]);
 
-  // While checking for user, show a full-page spinner
-  if (isLoading) {
+  // Show spinner during SSR and initial client hydration to avoid mismatch
+  if (!mounted || isLoading) {
     return <Spinner fullPage />;
   }
 
