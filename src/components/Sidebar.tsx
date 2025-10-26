@@ -52,8 +52,8 @@ export default function Sidebar() {
       bg-primary
       shadow-xl
       h-screen
-      max-h-screen
       px-2
+      
       flex
       flex-col
       transition-all
