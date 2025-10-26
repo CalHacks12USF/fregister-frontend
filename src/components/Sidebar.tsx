@@ -139,6 +139,9 @@ export default function Sidebar() {
               alt={user.name}
               sx={{ width: 24, height: 24 }}
               className="shrink-0"
+              imgProps={{
+                referrerPolicy: "no-referrer"
+              }}
             />
             <span className={`transition-all duration-300 whitespace-nowrap overflow-hidden text-ellipsis ${isCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100 ml-2 text-sm'}`}>
               {user.name}
