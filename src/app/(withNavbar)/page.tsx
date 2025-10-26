@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InputField from '@/components/InputField';
 import { useMessageMutation } from '@/hooks/useMessageMutation';
+import { useThreads } from '@/hooks/useThreads';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -12,6 +13,7 @@ export default function HomePage() {
   const router = useRouter();
   const { user } = useAuth();
   const { startConversation, isLoading } = useMessageMutation();
+  const { mutate: mutateThreads } = useThreads({ limit: 20 });
 
   const startChat = async () => {
     if (!inputValue.trim()) return;
@@ -31,6 +33,16 @@ export default function HomePage() {
       if (result?.success) {
         toast.success('Conversation started!', { id: toastId });
         const threadId = result.data.thread.id;
+
+        // Update the threads cache with the new thread (no API call needed!)
+        mutateThreads((currentData) => {
+          if (!currentData) return currentData;
+          return {
+            ...currentData,
+            data: [result.data.thread, ...currentData.data],
+            total: currentData.total + 1,
+          };
+        }, false);
 
         // Store the conversation data in sessionStorage for the chat page
         sessionStorage.setItem(`chat-${threadId}-data`, JSON.stringify(result.data));

@@ -1,17 +1,11 @@
-interface CreateThreadDto {
+import { Thread } from "./thread.interface";
+
+export interface CreateThreadDto {
 	user_id: string;
 	content: string;
 }
 
-interface Thread {
-	id: string;
-	title: string;
-	user_id: string;
-	created_at: string;
-	updated_at: string;
-}
-
-interface Message {
+export interface Message {
 	id: string;
 	thread_id: string;
 	role: "user" | "assistant" | "system";
@@ -22,7 +16,7 @@ interface Message {
 	updated_at: string;
 }
 
-interface StartConversationResponse {
+export interface StartConversationResponse {
 	success: true;
 	data: {
 		thread: Thread;
@@ -30,7 +24,7 @@ interface StartConversationResponse {
 	};
 }
 
-interface CreateMessageDto {
+export interface CreateMessageDto {
 	thread_id: string;
 	user_id: string;
 	content: string;
@@ -38,7 +32,7 @@ interface CreateMessageDto {
 	metadata?: Record<string, unknown>;
 }
 
-interface SendMessageResponse {
+export interface SendMessageResponse {
 	success: true;
 	data: {
 		userMessage: Message;
@@ -46,7 +40,7 @@ interface SendMessageResponse {
 	};
 }
 
-interface ThreadMessagesResponse {
+export interface ThreadMessagesResponse {
 	success: true;
 	data: Message[];
 	total: number;

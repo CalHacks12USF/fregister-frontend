@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { apiFetcher } from "@/utils/apiFetcher";
 import { useAuth } from "@/contexts/AuthContext";
+import { ThreadMessagesResponse } from "@/types/message.interface";
 
 /**
  * A hook to fetch all messages in a thread
