@@ -88,7 +88,7 @@ export default function Sidebar() {
       </div>
 
       {!isCollapsed && (
-        <div className="flex-1 mt-6 px-2 min-h-0 flex flex-col">
+        <div className="flex flex-col flex-1 min-h-0 mt-6 px-2">
           <h3 className="text-sm font-semibold text-custom-gray animate-fade-in">Recent Chats</h3>
           <hr className='text-secondary opacity-70 my-2 animate-fade-in'/>
           <div className="flex-1 overflow-y-auto min-h-0">
