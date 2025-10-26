@@ -1,5 +1,6 @@
 import useSWRMutation from "swr/mutation";
 import { useAuth } from "@/contexts/AuthContext";
+import { CreateMessageDto, SendMessageResponse } from "@/types/message.interface";
 
 /**
  * Fetcher function for sending a message
