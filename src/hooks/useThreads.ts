@@ -16,9 +16,14 @@ export function useThreads(params: UseThreadsParams = {}) {
 	const { token, user } = useAuth();
 	const { limit = 20, offset = 0 } = params;
 
+	// Require user.id to be present
+	if (!user?.id) {
+		throw new Error("useThreads requires user.id to be available");
+	}
+
 	// Build query string
 	const queryParams = new URLSearchParams();
-	if (user?.id) queryParams.append("user_id", user.id);
+	queryParams.append("user_id", user.id);
 	queryParams.append("limit", limit.toString());
 	queryParams.append("offset", offset.toString());
 
