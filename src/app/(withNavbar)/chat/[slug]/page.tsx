@@ -16,18 +16,12 @@ interface Message {
   fullText?: string;
 }
 
-interface Thread {
-  id: string;
-  title: string;
-  user_id: string;
-  created_at: string;
-  updated_at: string;
-}
-
 interface ConversationData {
   thread: Thread;
   content: string;
 }
+
+const TYPEWRITER_SPEED_MS = 20;
 
 export default function ChatPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -111,7 +105,7 @@ export default function ChatPage({ params }: { params: Promise<{ slug: string }>
     if (generatingText.length < fullText.length) {
       const timer = setTimeout(() => {
         setGeneratingText(fullText.slice(0, generatingText.length + 1));
-      }, 20); // Typing speed in ms per character
+      }, TYPEWRITER_SPEED_MS); // Typing speed in ms per character
       return () => clearTimeout(timer);
     }
   }, [messages, generatingText]);
@@ -131,7 +125,7 @@ export default function ChatPage({ params }: { params: Promise<{ slug: string }>
             ? { ...m, text: fullText.slice(0, currentLength + 1) }
             : m
         ));
-      }, 20); // Typing speed in ms per character
+      }, TYPEWRITER_SPEED_MS); // Typing speed in ms per character
 
       return () => clearTimeout(timer);
     } else {

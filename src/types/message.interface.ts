@@ -29,3 +29,27 @@ interface StartConversationResponse {
 		content: string;
 	};
 }
+
+interface CreateMessageDto {
+	thread_id: string;
+	user_id: string;
+	content: string;
+	role?: "user" | "assistant" | "system";
+	metadata?: Record<string, unknown>;
+}
+
+interface SendMessageResponse {
+	success: true;
+	data: {
+		userMessage: Message;
+		aiMessage: Message;
+	};
+}
+
+interface ThreadMessagesResponse {
+	success: true;
+	data: Message[];
+	total: number;
+	limit: number;
+	offset: number;
+}
