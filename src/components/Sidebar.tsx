@@ -6,6 +6,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import Link from 'next/link';
+import { useInventory } from '@/hooks';
+import InventoryModal from './InventoryModal';
 
 const dummyChats = [
   { id: 1, title: "Generate a shopping list for mis..." },
@@ -19,6 +21,10 @@ const dummyChats = [
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInventoryModalOpen, setIsInventoryModalOpen] = useState(false);
+  
+  // Fetch inventory data
+  const { inventory, error: inventoryError, isLoading: isInventoryLoading } = useInventory();
 
   const handleToggle = () => {
     setIsCollapsed(!isCollapsed);
@@ -67,7 +73,10 @@ export default function Sidebar() {
           Search chats
         </span>
       </div>
-      <div className="flex font-normal text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
+      <div 
+        className="flex font-normal text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2"
+        onClick={() => setIsInventoryModalOpen(true)}
+      >
         <div className="w-6 flex justify-center shrink-0">
           <KitchenIcon fontSize="small" />
         </div>
@@ -105,6 +114,15 @@ export default function Sidebar() {
           )}
         </div>
       )}
+      
+      {/* Inventory Modal */}
+      <InventoryModal 
+        isOpen={isInventoryModalOpen}
+        onClose={() => setIsInventoryModalOpen(false)}
+        inventory={inventory}
+        isLoading={isInventoryLoading}
+        error={inventoryError}
+      />
     </aside>
   );
 }
