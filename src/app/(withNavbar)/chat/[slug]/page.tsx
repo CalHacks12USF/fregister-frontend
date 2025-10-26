@@ -6,6 +6,7 @@ import { useSendMessage } from '@/hooks/useSendMessage';
 import { useThreadMessages } from '@/hooks/useThreadMessages';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { Thread } from '@/types';
 
 interface Message {
   id: string;
@@ -21,7 +22,7 @@ interface ConversationData {
   content: string;
 }
 
-const TYPEWRITER_SPEED_MS = 20;
+const TYPEWRITER_SPEED_MS = 5;
 
 export default function ChatPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);

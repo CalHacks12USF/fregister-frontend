@@ -2,28 +2,21 @@
 
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import Link from 'next/link';
-import { useInventory } from '@/hooks';
 import { useThreads } from '@/hooks/useThreads';
 import { useAuth } from '@/contexts/AuthContext';
-import InventoryModal from './InventoryModal';
 import MenuOpenRoundedIcon from '@mui/icons-material/MenuOpenRounded';
 
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isInventoryModalOpen, setIsInventoryModalOpen] = useState(false);
   const [profileMenuAnchor, setProfileMenuAnchor] = useState<null | HTMLElement>(null);
-
-  // Fetch inventory data
-  const { inventory, error: inventoryError, isLoading: isInventoryLoading } = useInventory();
 
   // Fetch threads data
   const { threads, isLoading: isThreadsLoading, error: threadsError } = useThreads({ limit: 20 });
@@ -104,17 +97,14 @@ export default function Sidebar() {
           New Chat
         </span>
       </Link>
-      <div
-        className="flex font-normal text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2"
-        onClick={() => setIsInventoryModalOpen(true)}
-      >
+      <Link href="/inventory" className="flex font-normal text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
         <div className="w-6 flex justify-center shrink-0">
           <KitchenIcon fontSize="small" />
         </div>
         <span className={`transition-all duration-300 whitespace-nowrap ml-2 md:ml-0 ${isCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'md:opacity-100 md:ml-2'}`}>
           Inventory
         </span>
-      </div>
+      </Link>
 
       <div className={`flex-col flex-1 min-h-0 mt-6 px-2 flex md:flex ${isCollapsed ? 'md:hidden' : ''}`}>
         <h3 className="text-base md:text-sm font-semibold text-custom-gray animate-fade-in">Recent Chats</h3>
@@ -239,15 +229,6 @@ export default function Sidebar() {
           Logout
         </MenuItem>
       </Menu>
-
-      {/* Inventory Modal */}
-      <InventoryModal
-        isOpen={isInventoryModalOpen}
-        onClose={() => setIsInventoryModalOpen(false)}
-        inventory={inventory}
-        isLoading={isInventoryLoading}
-        error={inventoryError}
-      />
     </aside>
     </>
   );

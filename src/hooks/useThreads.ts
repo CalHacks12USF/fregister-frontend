@@ -4,7 +4,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ThreadsResponse } from "@/types";
 
 interface UseThreadsParams {
-	userId?: string;
 	limit?: number;
 	offset?: number;
 }
@@ -14,12 +13,17 @@ interface UseThreadsParams {
  * Supports optional filtering by user_id and pagination with limit/offset
  */
 export function useThreads(params: UseThreadsParams = {}) {
-	const { token } = useAuth();
-	const { userId, limit = 20, offset = 0 } = params;
+	const { token, user } = useAuth();
+	const { limit = 20, offset = 0 } = params;
+
+	// Require user.id to be present
+	if (!user?.id) {
+		throw new Error("useThreads requires user.id to be available");
+	}
 
 	// Build query string
 	const queryParams = new URLSearchParams();
-	if (userId) queryParams.append("user_id", userId);
+	queryParams.append("user_id", user.id);
 	queryParams.append("limit", limit.toString());
 	queryParams.append("offset", offset.toString());
 
