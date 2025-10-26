@@ -104,8 +104,8 @@ export default function InventoryPage() {
       {/* Footer info - pinned to bottom */}
       {!isLoading && !error && displayItems.length > 0 && (
         <div className="text-center text-sm text-gray-500 pt-4 border-t border-gray-200 mt-8">
-          <p>Last updated: {new Date(inventory!.data.timestamp).toLocaleString()}</p>
-          {inventory!.cached && (
+          <p>Last updated: {new Date(inventory?.data?.timestamp ?? Date.now()).toLocaleString()}</p>
+          {inventory?.cached && (
             <p className="text-xs text-gray-400 mt-1">(Cached)</p>
           )}
         </div>
