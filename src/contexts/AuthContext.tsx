@@ -75,7 +75,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('token', supabaseToken);
 
         toast.success('Successfully signed in!', { id: toastId });
-        router.push('/');
+        
+        // Redirect based on isNewUser flag
+        if (data.isNewUser) {
+          router.push('/complete-signup');
+        } else {
+          router.push('/');
+        }
       } else {
         const errorData = await response.text();
         console.error('Backend authentication failed:', errorData);
