@@ -10,10 +10,12 @@ import { Avatar, Menu, MenuItem } from '@mui/material';
 import Link from 'next/link';
 import { useThreads } from '@/hooks/useThreads';
 import { useAuth } from '@/contexts/AuthContext';
+import MenuOpenRoundedIcon from '@mui/icons-material/MenuOpenRounded';
 
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [profileMenuAnchor, setProfileMenuAnchor] = useState<null | HTMLElement>(null);
 
   // Fetch threads data
@@ -40,47 +42,73 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className={`
-      ${isCollapsed ? 'w-12' : 'w-64'}
-      bg-primary
-      shadow-xl
-      h-screen
-      px-2
-      
-      flex
-      flex-col
-      transition-all
-      duration-300
-    `}>
-      <div className="p-2 mb-3 flex justify-between items-center min-h-10">
-        {!isCollapsed && <h2 className="font-bold text-secondary">Fregister</h2>}
+    <>
+      {/* Mobile Menu Button - Only visible on small screens */}
+      <button
+        onClick={() => setIsMobileMenuOpen(true)}
+        className="md:hidden fixed top-4 left-4 z-40 p-2 bg-primary text-secondary rounded-md shadow-lg hover:bg-primary/90 transition-colors"
+      >
+        <MenuOpenRoundedIcon fontSize="small" />
+      </button>
+
+      {/* Backdrop for mobile menu */}
+      {isMobileMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Desktop: Always visible, Mobile: Slide-in overlay */}
+      <aside className={`
+        ${isCollapsed ? 'md:w-12' : 'md:w-64'}
+        bg-primary
+        shadow-xl
+        h-screen
+        px-2
+        flex
+        flex-col
+        transition-all
+        duration-300
+
+        // Mobile styles
+        fixed md:relative
+        z-50
+        w-4/5
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+      <div className="p-4 md:p-2 mb-3 flex justify-center md:justify-between items-center min-h-10">
+        <h2 className={`font-bold text-secondary text-3xl md:text-base ${isCollapsed ? 'md:hidden' : ''}`}>Fregister</h2>
         <ViewSidebarRoundedIcon
           fontSize="small"
           onClick={handleToggle}
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer !hidden md:!block"
         />
       </div>
-      <Link href="/" className="flex font-normal text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
+      <Link
+        href="/"
+        className="flex font-normal justify-center md:justify-start text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
         <div className="w-6 flex justify-center shrink-0">
-          <AddIcon fontSize="small" />
+          <AddIcon sx={{ fontSize: 40 }} className="md:!text-xl" />
         </div>
-        <span className={`transition-all duration-300 whitespace-nowrap ${isCollapsed ? 'opacity-0 w-0 overflow-hidden ml-0' : 'opacity-100 ml-2'}`}>
+        <span className={`transition-all duration-300 whitespace-nowrap ml-6 md:ml-0 text-3xl md:text-base ${isCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'md:opacity-100 md:ml-2'}`}>
           New Chat
         </span>
       </Link>
-      <Link href="/inventory" className="flex font-normal text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
+      <Link href="/inventory" className="flex font-normal justify-center md:justify-start text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
         <div className="w-6 flex justify-center shrink-0">
-          <KitchenIcon fontSize="small" />
+          <KitchenIcon sx={{ fontSize: 40 }} className="md:!text-xl" />
         </div>
-        <span className={`transition-all duration-300 whitespace-nowrap ${isCollapsed ? 'opacity-0 w-0 overflow-hidden ml-0' : 'opacity-100 ml-2'}`}>
+        <span className={`transition-all duration-300 whitespace-nowrap ml-6 md:ml-0 text-3xl md:text-base ${isCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'md:opacity-100 md:ml-2'}`}>
           Inventory
         </span>
       </Link>
 
-      {!isCollapsed && (
-        <div className="flex flex-col flex-1 min-h-0 mt-6 px-2">
-          <h3 className="text-sm font-semibold text-custom-gray animate-fade-in">Recent Chats</h3>
-          <hr className='text-secondary opacity-70 my-2 animate-fade-in'/>
+      <div className={`flex-col flex-1 min-h-0 mt-6 px-2 flex md:flex ${isCollapsed ? 'md:hidden' : ''}`}>
+        <h3 className="text-center md:text-start text-lg md:text-sm font-semibold text-custom-gray animate-fade-in">Recent Chats</h3>
+        <hr className='text-secondary opacity-70 my-2 animate-fade-in'/>
           <div className="flex-1 overflow-y-auto min-h-0">
             {isThreadsLoading ? (
               // Skeleton loading
@@ -93,19 +121,23 @@ export default function Sidebar() {
                 ))}
               </>
             ) : threadsError ? (
-              <div className="text-sm text-red-500 px-1 py-2">
+              <div className="text-base md:text-sm text-red-500 px-1 py-2">
                 Failed to load chats
               </div>
             ) : !threads || threads.length === 0 ? (
-              <div className="text-sm text-custom-gray px-1 py-2">
+              <div className="text-base md:text-sm text-custom-gray px-1 py-2">
                 No chats yet
               </div>
             ) : (
               // Actual thread items
               threads.map((thread, index) => (
-                <Link href={`/chat/${thread.id}`} key={thread.id}>
+                <Link
+                  href={`/chat/${thread.id}`}
+                  key={thread.id}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   <div
-                    className="text-sm hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2 opacity-0 animate-fade-in"
+                    className="text-lg md:text-sm hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2 opacity-0 animate-fade-in"
                     style={{ animationDelay: `${(index + 1) * 100}ms`, animationFillMode: 'forwards' }}
                   >
                     {thread.title}
@@ -114,9 +146,8 @@ export default function Sidebar() {
               ))
             )}
           </div>
-        </div>
-      )}
-      
+      </div>
+
       {/* Profile Section */}
       {user && (
         <div className='border-t border-secondary/30 -mx-2 pt-2'>
@@ -133,7 +164,7 @@ export default function Sidebar() {
                 referrerPolicy: "no-referrer"
               }}
             />
-            <span className={`transition-all duration-300 whitespace-nowrap overflow-hidden text-ellipsis ${isCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100 ml-2 text-sm'}`}>
+            <span className={`transition-all duration-300 whitespace-nowrap overflow-hidden text-ellipsis text-base md:text-sm ml-2 md:ml-0 ${isCollapsed ? 'md:opacity-0 md:w-0' : 'md:opacity-100 md:ml-2'}`}>
               {user.name}
             </span>
           </div>
@@ -199,5 +230,6 @@ export default function Sidebar() {
         </MenuItem>
       </Menu>
     </aside>
+    </>
   );
 }

@@ -280,7 +280,7 @@ export default function ChatPage({ params }: { params: Promise<{ slug: string }>
   };
 
   return (
-    <div className="flex flex-col h-screen w-[55%] mx-auto">
+    <div className="flex flex-col h-screen w-[90%] sm:w-[75%] md:w-[55%] mx-auto">
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto px-8 py-6">
         {(!hasCheckedStorage || isLoadingMessages) && !isNewThread && messages.length === 0 ? (

@@ -67,7 +67,7 @@ export default function HomePage() {
     <div className="bg-bgMain flex flex-col items-center justify-center min-h-screen">
       <div className="text-primary font-bold text-3xl flex flex-col items-center">
         Where should we begin?
-        <span className='font-normal text-base py-2 mb-2 text-custom-gray'>
+        <span className='font-normal text-xs xs:text-sm md:text-base py-2 mb-2 text-custom-gray'>
           Ask me anything about recipes, meal planning, or your inventory
         </span>
       </div>
