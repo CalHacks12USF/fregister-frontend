@@ -64,7 +64,7 @@ export default function Sidebar() {
         ${isCollapsed ? 'md:w-12' : 'md:w-64'}
         bg-primary
         shadow-xl
-        h-screen
+        h-full
         px-2
         flex
         flex-col
@@ -73,6 +73,7 @@ export default function Sidebar() {
 
         // Mobile styles
         fixed md:relative
+        top-0
         z-50
         w-4/5
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}

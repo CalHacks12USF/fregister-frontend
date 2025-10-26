@@ -10,6 +10,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   handleLoginSuccess: (credentialResponse: CredentialResponse) => Promise<void>;
+  devBypassLogin: () => void;
   logout: () => void;
 }
 
@@ -93,6 +94,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const devBypassLogin = () => {
+    // Only allow in development mode
+    if (process.env.NODE_ENV !== 'development') {
+      console.warn('Dev bypass only available in development mode');
+      return;
+    }
+
+    const mockUser: User = {
+      id: 'dev-user-123',
+      email: 'dev@fregister.local',
+      name: 'Dev User',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DevUser',
+    };
+
+    const mockToken = 'dev-bypass-token-' + Date.now();
+
+    setUser(mockUser);
+    setToken(mockToken);
+    localStorage.setItem('user', JSON.stringify(mockUser));
+    localStorage.setItem('token', mockToken);
+
+    toast.success('Dev bypass login successful!');
+    router.push('/');
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -103,7 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, handleLoginSuccess, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoading, handleLoginSuccess, devBypassLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

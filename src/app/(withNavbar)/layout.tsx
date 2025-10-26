@@ -35,10 +35,9 @@ export default function MainLayout({
   // If there's a user, show the navbar and the page content
   if (user) {
     return (
-      <div className="bg-bgMain min-h-screen flex">
+      <div className="bg-bgMain h-screen w-screen flex">
         <Sidebar />
         <main className="flex-1">
-          {/* <Navbar /> */}
           {children}
         </main>
       </div>

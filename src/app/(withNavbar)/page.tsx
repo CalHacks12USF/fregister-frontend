@@ -64,14 +64,14 @@ export default function HomePage() {
   };
 
   return (
-    <div className="bg-bgMain flex flex-col items-center justify-center min-h-screen">
-      <div className="text-primary font-bold text-3xl flex flex-col items-center">
+    <div className="bg-bgMain flex flex-col items-center justify-center h-full px-4">
+      <div className="text-primary font-bold text-2xl sm:text-3xl flex flex-col items-center text-center">
         Where should we begin?
         <span className='font-normal text-xs xs:text-sm md:text-base py-2 mb-2 text-custom-gray'>
           Ask me anything about recipes, meal planning, or your inventory
         </span>
       </div>
-      <div className='w-2/3 mx-auto'>
+      <div className='w-full sm:w-5/6 md:w-2/3 mx-auto'>
         <form onSubmit={handleStartChat}>
           <InputField
             value={inputValue}

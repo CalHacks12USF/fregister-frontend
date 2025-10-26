@@ -6,11 +6,13 @@ import toast from 'react-hot-toast';
 import { Logo } from "./Logo";
 
 export default function LoginPage() {
-  const { handleLoginSuccess } = useAuth();
+  const { handleLoginSuccess, devBypassLogin } = useAuth();
 
   const handleLoginError = () => {
     toast.error('Google login failed. Please try again.');
   };
+
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-4">
@@ -33,6 +35,26 @@ export default function LoginPage() {
           <div className="w-full flex justify-center">
             <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
           </div>
+
+          {/* Dev Bypass Button - Only in Development */}
+          {isDevelopment && (
+            <div className="mt-6">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-gray-500">Dev Mode</span>
+                </div>
+              </div>
+              <button
+                onClick={devBypassLogin}
+                className="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-lg transition-colors shadow-sm"
+              >
+                🚀 Dev Bypass Login
+              </button>
+            </div>
+          )}
 
           {/* Privacy Notice */}
           <p className="text-xs text-center text-slate-500 mt-6 leading-relaxed">
