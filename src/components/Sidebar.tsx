@@ -77,7 +77,7 @@ export default function Sidebar() {
         w-4/5
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
-      <div className="p-2 mb-3 flex justify-between items-center min-h-10">
+      <div className="p-4 md:p-2 mb-3 flex justify-center md:justify-between items-center min-h-10">
         <h2 className={`font-bold text-secondary text-3xl md:text-base ${isCollapsed ? 'md:hidden' : ''}`}>Fregister</h2>
         <ViewSidebarRoundedIcon
           fontSize="small"
@@ -87,27 +87,27 @@ export default function Sidebar() {
       </div>
       <Link
         href="/"
-        className="flex font-normal text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2"
+        className="flex font-normal justify-center md:justify-start text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2"
         onClick={() => setIsMobileMenuOpen(false)}
       >
         <div className="w-6 flex justify-center shrink-0">
           <AddIcon sx={{ fontSize: 40 }} className="md:!text-xl" />
         </div>
-        <span className={`transition-all duration-300 whitespace-nowrap ml-2 md:ml-0 text-3xl md:text-base ${isCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'md:opacity-100 md:ml-2'}`}>
+        <span className={`transition-all duration-300 whitespace-nowrap ml-6 md:ml-0 text-3xl md:text-base ${isCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'md:opacity-100 md:ml-2'}`}>
           New Chat
         </span>
       </Link>
-      <Link href="/inventory" className="flex font-normal text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
+      <Link href="/inventory" className="flex font-normal justify-center md:justify-start text-base md:text-sm items-center hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2">
         <div className="w-6 flex justify-center shrink-0">
-          <KitchenIcon fontSize="small" />
+          <KitchenIcon sx={{ fontSize: 40 }} className="md:!text-xl" />
         </div>
-        <span className={`transition-all duration-300 whitespace-nowrap ml-2 md:ml-0 ${isCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'md:opacity-100 md:ml-2'}`}>
+        <span className={`transition-all duration-300 whitespace-nowrap ml-6 md:ml-0 text-3xl md:text-base ${isCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'md:opacity-100 md:ml-2'}`}>
           Inventory
         </span>
       </Link>
 
       <div className={`flex-col flex-1 min-h-0 mt-6 px-2 flex md:flex ${isCollapsed ? 'md:hidden' : ''}`}>
-        <h3 className="text-base md:text-sm font-semibold text-custom-gray animate-fade-in">Recent Chats</h3>
+        <h3 className="text-center md:text-start text-lg md:text-sm font-semibold text-custom-gray animate-fade-in">Recent Chats</h3>
         <hr className='text-secondary opacity-70 my-2 animate-fade-in'/>
           <div className="flex-1 overflow-y-auto min-h-0">
             {isThreadsLoading ? (
@@ -137,7 +137,7 @@ export default function Sidebar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div
-                    className="text-base md:text-sm hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2 opacity-0 animate-fade-in"
+                    className="text-lg md:text-sm hover:cursor-pointer hover:bg-secondary/15 rounded-md px-1 py-2 opacity-0 animate-fade-in"
                     style={{ animationDelay: `${(index + 1) * 100}ms`, animationFillMode: 'forwards' }}
                   >
                     {thread.title}
