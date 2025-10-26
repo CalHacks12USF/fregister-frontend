@@ -1,5 +1,6 @@
 import useSWRMutation from "swr/mutation";
 import { useAuth } from "@/contexts/AuthContext";
+import { CreateThreadDto, StartConversationResponse } from "@/types/message.interface";
 
 /**
  * Fetcher function for starting a conversation
